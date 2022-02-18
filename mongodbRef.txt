@@ -1,0 +1,95 @@
+Creating CRUD OPP
+1) Create
+==>
+
+
+> db.tours.insertMany([ { name: "The Sea Explore", price: 120, rating: 4.9}, { name: "The Snow Adventure", price: 997, rating: 4.9, difficulty: "easy" } ])
+> {
+
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("620ea0f907d8e4ee6361bbed"),
+                ObjectId("620ea0f907d8e4ee6361bbee")
+        ]
+
+}
+
+> db.tours.find()
+> { "\_id" : ObjectId("620ea0f907d8e4ee6361bbed"), "name" : "The Sea Explore", "price" : 120, "rating" : 4.9 }
+> { "\_id" : ObjectId("620ea0f907d8e4ee6361bbee"), "name" : "The Snow Adventure", "price" : 997, "rating" : 4.9, "difficulty" : "easy" }
+
+
+2) Querying || Reading 
+==>
+
+> db.tours.find()
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbed"), "name" : "The Sea Explore", "price" : 120, "rating" : 4.9 }
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbee"), "name" : "The Snow Adventure", "price" : 997, "rating" : 4.9, "difficulty" : "easy" }
+> db.tours.find({ name: "The Forest Hiker" })
+> db.tours.find({ name: "The Sea Explore" })
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbed"), "name" : "The Sea Explore", "price" : 120, "rating" : 4.9 }
+> db.tours.find({"difficulty": "easy"})
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbee"), "name" : "The Snow Adventure", "price" : 997, "rating" : 4.9, "difficulty" : "easy" }
+
+Searching with single character => less then = lte || lt
+
+> db.tours.find({ price: {$lte: 500}})
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbed"), "name" : "The Sea Explore", "price" : 120, "rating" : 4.9 }
+
+Searching with multiple character => greater than = gte || gt
+
+> db.tours.find({ price: {$lte: 500}, rating:  {$gte: 4.8}})
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbed"), "name" : "The Sea Explore", "price" : 120, "rating" : 4.9 }
+> 
+
+
+Searching with multiple character => with $or 
+
+> db.tours.find({ $or: [ {price: {$lt: 500}}, {rating: {$gte: 4.8}}  ]})
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbed"), "name" : "The Sea Explore", "price" : 120, "rating" : 4.9 }
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbee"), "name" : "The Snow Adventure", "price" : 997, "rating" : 4.9, "difficulty" : "easy" }
+> db.tours.find({ $or: [ {price: {$gt: 500}}, {rating: {$gte: 4.8}}  ]})
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbed"), "name" : "The Sea Explore", "price" : 120, "rating" : 4.9 }
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbee"), "name" : "The Snow Adventure", "price" : 997, "rating" : 4.9, "difficulty" : "easy" }
+> db.tours.find({ $or: [ {price: {$gt: 500}}, {rating: {$gte: 4.8}}  ]}), {name: 1}
+{ "name" : 1 }
+> db.tours.find({ $or: [ {price: {$gt: 500}}, {rating: {$gte: 4.8}}  ]}, {name: 1})
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbed"), "name" : "The Sea Explore" }
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbee"), "name" : "The Snow Adventure" }
+> 
+
+Updating =>
+
+> db.tours.updateOne({name: "The Snow Adventure"}, {$set: {price: 597}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.tours.find()
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbed"), "name" : "The Sea Explore", "price" : 120, "rating" : 4.9 }
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbee"), "name" : "The Snow Adventure", "price" : 597, "rating" : 4.9, "difficulty" : "easy" }
+> db.tours.find({ price: {$gt: 500}, rating: {$gt : 4.8}  })
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbee"), "name" : "The Snow Adventure", "price" : 597, "rating" : 4.9, "difficulty" : "easy" }
+> 
+> 
+
+Finding by specific criteria and update that specific at the same =>
+
+> db.tours.updateMany({ price: {$gt: 500}, rating: {$gt : 4.8}  }, { $set: {premium: true}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.tours.find()
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbed"), "name" : "The Sea Explore", "price" : 120, "rating" : 4.9 }
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbee"), "name" : "The Snow Adventure", "price" : 597, "rating" : 4.9, "difficulty" : "easy", "premium" : true }
+> 
+
+
+Delete by specific criteria =>
+
+> db.tours.find()
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbed"), "name" : "The Sea Explore", "price" : 120, "rating" : 4.9 }
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbee"), "name" : "The Snow Adventure", "price" : 597, "rating" : 4.9, "difficulty" : "easy", "premium" : true }
+> 
+> 
+> 
+> db.tours.deleteMany({ price: {$lt: 200} })
+{ "acknowledged" : true, "deletedCount" : 1 }
+> db.tours.find()
+{ "_id" : ObjectId("620ea0f907d8e4ee6361bbee"), "name" : "The Snow Adventure", "price" : 597, "rating" : 4.9, "difficulty" : "easy", "premium" : true }
+> 
