@@ -1,6 +1,7 @@
 // SEPARATE routes from app.js to specific routes single file.js
 const express = require('express');
 const tourController = require('../controllers/tourController');
+const authController = require('../controllers/authController');
 
 const router = express.Router(); // creating router must change app with tourRouter
 
@@ -14,7 +15,7 @@ router.route('/monthly-plan/:year').get(tourController.getMonthlyPlan);
 
 router
   .route('/')
-  .get(tourController.getAllTours)
+  .get(authController.protect, tourController.getAllTours)
   .post(tourController.createTour);
 router
   .route('/:id')
