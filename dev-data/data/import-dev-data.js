@@ -31,9 +31,7 @@ mongoose
  * A simple function that returns a list of tours.
  * @returns A list of tours.
  */
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8')
-);
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8'));
 // IMPORT DATA TO DATABASE
 /**
  * Imports the data into the database.
