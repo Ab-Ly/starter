@@ -49,44 +49,50 @@ exports.getTour = catchAsync(async (req, res, next) => {
 });
 
 //--------------------------------------------------------------------------
-exports.createTour = catchAsync(async (req, res, next) => {
-  const newTour = await Tour.create(req.body);
+// => From this To Factory Create =>
+// exports.createTour = catchAsync(async (req, res, next) => {
+//   const newTour = await Tour.create(req.body);
 
-  res.status(201).json({
-    status: 'success',
-    data: {
-      tour: newTour,
-    },
-  });
-  // try {
-  //   // const newTour = new Tour({})
-  //   // newTour.save()
-  // } catch (err) {
-  //   res.status(400).json({
-  //     status: 'fail',
-  //     message: err,
-  //   });
-  // }
-});
+//   res.status(201).json({
+//     status: 'success',
+//     data: {
+//       tour: newTour,
+//     },
+//   });
+
+// try {
+//   // const newTour = new Tour({})
+//   // newTour.save()
+// } catch (err) {
+//   res.status(400).json({
+//     status: 'fail',
+//     message: err,
+//   });
+// }
+// });
+// => To this
+exports.createTour = factory.createOne(Tour);
 
 //--------------------------------------------------------------------------
-exports.updateTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-  if (!tour) {
-    return next(new AppError('No Tour Found with that ID', 404));
-  }
+// =>From this To factory Update=>
+// exports.updateTour = catchAsync(async (req, res, next) => {
+//   const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+//     new: true,
+//     runValidators: true,
+//   });
+//   if (!tour) {
+//     return next(new AppError('No Tour Found with that ID', 404));
+//   }
 
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour,
-    },
-  });
-});
-
+//   res.status(200).json({
+//     status: 'success',
+//     data: {
+//       tour,
+//     },
+//   });
+// });
+// => To this
+exports.updateTour = factory.updateOne(Tour);
 //--------------------------------------------------------------------------
 // => from this to factory delete =>
 // exports.deleteTour = catchAsync(async (req, res, next) => {

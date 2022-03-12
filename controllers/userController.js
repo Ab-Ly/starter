@@ -54,6 +54,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   });
 });
 
+// ----------------------------------------------------------------
 // Delete User document
 exports.deleteMe = catchAsync(async (req, res, next) => {
   await User.findByIdAndUpdate(req.user.id, { active: false });
@@ -63,22 +64,32 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
+// ----------------------------------------------------------------
 exports.getUser = (req, res) => {
   res.status(500).json({
     status: 'error',
     message: 'this route is not defined',
   });
 };
+
+// ----------------------------------------------------------------
 exports.createUser = (req, res) => {
   res.status(500).json({
     status: 'error',
     message: 'this route is not defined',
   });
 };
-exports.updateUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'this route is not defined',
-  });
-};
+
+// ----------------------------------------------------------------
+// => From this To Factory Update =>
+// exports.updateUser = (req, res) => {
+//   res.status(500).json({
+//     status: 'error',
+//     message: 'this route is not defined',
+//   });
+// };
+// => to this:
+exports.updateUser = factory.updateOne(User);
+
+// ----------------------------------------------------------------
 exports.deleteUser = factory.deleteOne(User);
