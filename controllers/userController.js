@@ -29,6 +29,12 @@ exports.getAllUsers = factory.getAll(User);
 //     message: 'this route is not defined',
 //   });
 // };
+
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+};
+
 exports.updateMe = catchAsync(async (req, res, next) => {
   // 1) Create a error if user POSTS password data
   if (req.body.password || req.body.passwordConfirm)
