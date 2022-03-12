@@ -2,6 +2,8 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const Tour = require('../../models/tourModel');
+const Review = require('../../models/reviewModel');
+const User = require('../../models/userModel');
 
 /**
  * Connect to the database.
@@ -32,6 +34,11 @@ mongoose
  * @returns A list of tours.
  */
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8'));
+const users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`, 'utf-8'));
+const reviews = JSON.parse(
+  fs.readFileSync(`${__dirname}/reviews.json`, 'utf-8')
+);
+
 // IMPORT DATA TO DATABASE
 /**
  * Imports the data into the database.
@@ -40,12 +47,15 @@ const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8'));
 const importData = async () => {
   try {
     await Tour.create(tours);
-    console.log('Data successful loaded !');
+    await User.create(users, { validateBeforeSave: false });
+    await Review.create(reviews);
+    console.log('Data successfully loaded!');
   } catch (err) {
     console.log(err);
   }
   process.exit();
 };
+
 // DELETE ALL DATA FROM COLLECTION
 /**
  * Deletes all data from the database.
@@ -54,12 +64,15 @@ const importData = async () => {
 const deleteData = async () => {
   try {
     await Tour.deleteMany();
-    console.log('Data successful deleted !');
+    await User.deleteMany();
+    await Review.deleteMany();
+    console.log('Data successfully deleted!');
   } catch (err) {
     console.log(err);
   }
   process.exit();
 };
+
 if (process.argv[2] === '--import') {
   importData();
 } else if (process.argv[2] === '--delete') {
