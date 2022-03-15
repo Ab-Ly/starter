@@ -20,10 +20,12 @@ const app = express();
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 // GLOBAL MIDDLEWARE
+
 // app.use(express.static(`${__dirname}/public`));
 app.use(express.static(path.join(__dirname, 'public')));
 // ----------------------------
 // Setting up security HTTP Headers Via helmet package
+
 app.use(helmet());
 // Development logging
 if (process.env.NODE_ENV !== 'development') {
