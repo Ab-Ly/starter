@@ -59,7 +59,13 @@ exports.login = catchAsync(async (req, res, next) => {
   // 3) if everything ok, send token to client
   createSendToken(user, 200, res);
 });
-
+exports.logout = (req, res) => {
+  res.cookie('jwt', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({ status: 'success' });
+};
 // Protect Tours just for the users sign in
 // 1) Getting token & check if exist
 exports.protect = catchAsync(async (req, res, next) => {
