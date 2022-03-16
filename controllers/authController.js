@@ -61,17 +61,19 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 // Protect Tours just for the users sign in
+// 1) Getting token & check if exist
 exports.protect = catchAsync(async (req, res, next) => {
-  // 1) Getting token & check if exist
   let token;
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer ')
   ) {
     token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
-  // console.log(token);
   if (!token) {
+    // console.log(token);
     return next(
       new AppError('You are not logged in ! Please log in to get access', 401)
     );
@@ -98,6 +100,29 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
   // ! GRANT ACCESS TO PROTECTED ROUTE
   req.user = freshUser;
+  next();
+});
+// Only for rendered pages, no errors
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
+  if (req.cookies.jwt) {
+    // verify token
+    const decoded = await promisify(jwt.verify)(
+      req.cookies.jwt,
+      process.env.JWT_SECRET
+    );
+
+    const freshUser = await User.findById(decoded.id);
+    if (!freshUser) {
+      return next();
+    }
+    if (freshUser.changedPasswordAfter(decoded.iat)) {
+      return next();
+    }
+    // there is a logged in user
+    res.locals.user = freshUser;
+
+    return next();
+  }
   next();
 });
 
