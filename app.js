@@ -27,6 +27,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Setting up security HTTP Headers Via helmet package
 
 app.use(helmet());
+
+// app.use((req, res, next) => {
+//   res.setHeader(
+//     'Content-Security-Policy',
+//     "script-src  'self' api.mapbox.com",
+//     "script-src-elem 'self' api.mapbox.com"
+//   );
+//   next();
+// });
+
 // Development logging
 if (process.env.NODE_ENV !== 'development') {
   app.use(morgan('dev'));

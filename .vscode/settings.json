@@ -3,6 +3,7 @@
     "dsphere",
     "latlng",
     "maxlength",
+    "minlength",
     "Natour",
     "Natours",
     "virtuals"
