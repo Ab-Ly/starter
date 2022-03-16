@@ -18,6 +18,8 @@ const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
 
+app.enable('trust proxy');
+
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 // GLOBAL MIDDLEWARE
@@ -26,14 +28,15 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 // ----------------------------
 // Setting up security HTTP Headers Via helmet package
-
 app.use(helmet());
 
 // app.use((req, res, next) => {
 //   res.setHeader(
 //     'Content-Security-Policy',
-//     "script-src  'self' api.mapbox.com",
-//     "script-src-elem 'self' api.mapbox.com"
+//     // 'connect-src
+//     'script-src cdnjs.cloudflare.com',
+//     "script-src  'self' mapbox-gl",
+//     "script-src-elem 'self' mapbox-gl"
 //   );
 //   next();
 // });
