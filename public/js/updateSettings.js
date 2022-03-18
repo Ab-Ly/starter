@@ -13,11 +13,12 @@ export const updateSettings = async (data, type) => {
         : '/api/v1/users/updateMe';
     const res = await axios({
       method: 'PATCH',
-      url,
-      data,
+      url: url,
+      data: data,
     });
     if (res.data.status === 'success') {
       showAlert('success', `${type.toUpperCase()} updated successfully.`);
+      locations.reload();
     }
   } catch (err) {
     showAlert('error', err.response.data.message);
