@@ -1,8 +1,11 @@
 // seperate routes from app.js to specific routes single file.js
 
 const express = require('express');
+const multer = require('multer');
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
+
+const upload = multer({ dest: 'public/img/users' });
 
 const router = express.Router();
 
@@ -12,6 +15,7 @@ router.get('/logout', authController.logout);
 
 router.post('/forgotPassword', authController.forgotPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
+
 // --------------------------- With authentication---Protect Route After middleware:Router.Use
 router.use(authController.protect);
 
@@ -27,7 +31,7 @@ router.get(
   userController.getMe,
   userController.getUser
 );
-router.patch('/updateMe', userController.updateMe);
+router.patch('/updateMe', upload.single('photo'), userController.updateMe);
 router.delete('/deleteMe', userController.deleteMe);
 
 router.use(authController.restrictTo('admin'));

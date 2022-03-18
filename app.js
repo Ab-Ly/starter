@@ -61,8 +61,10 @@ app.use(cookieParser());
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
 // Data sanitization against XSS = cross site scripting attack
+app.use(xss());
+// Prevent parameter pollution
 app.use(
-  xss({
+  hpp({
     whitelist: [
       'duration',
       'ratingsQuantity',
@@ -73,8 +75,6 @@ app.use(
     ],
   })
 );
-// Prevent parameter pollution
-app.use(hpp());
 // Serving static files
 
 // app.use((req, res, next) => {
@@ -84,7 +84,7 @@ app.use(hpp());
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log(req.cookies);
+  // console.log(req.cookies);
   next();
 });
 // ROUTES
