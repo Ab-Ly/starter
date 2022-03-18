@@ -1,11 +1,8 @@
 // seperate routes from app.js to specific routes single file.js
 
 const express = require('express');
-const multer = require('multer');
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
-
-const upload = multer({ dest: 'public/img/users' });
 
 const router = express.Router();
 
@@ -31,7 +28,11 @@ router.get(
   userController.getMe,
   userController.getUser
 );
-router.patch('/updateMe', upload.single('photo'), userController.updateMe);
+router.patch(
+  '/updateMe',
+  userController.uploadUserPhoto,
+  userController.updateMe
+);
 router.delete('/deleteMe', userController.deleteMe);
 
 router.use(authController.restrictTo('admin'));
