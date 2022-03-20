@@ -1,11 +1,11 @@
 /* eslint-disable */
 export const displayMap = (locations) => {
   mapboxgl.accessToken =
-    'pk.eyJ1IjoiYWJseSIsImEiOiJjbDBzZHliZzYwNXkyM2lvNTJrdnNldXlzIn0.fINlL_39j4EFBtLYD5SCOA';
+    'pk.eyJ1IjoibmFjaGlrZXRhLWRoYWwiLCJhIjoiY2tqeHY3YnM3MDQxaTJwbXE1czVuYTJ3YyJ9.RrYbOpBmYzvacTxj-iIBBw';
 
   var map = new mapboxgl.Map({
     container: 'map', // container ID
-    style: 'mapbox://styles/ably/cl0se7aue000s14piubxhz77e', // style URL
+    style: 'mapbox://styles/nachiketa-dhal/ckjxvq1nu26io17moxyww3acv', // style URL
     scrollZoom: false,
     //     //   center: [-118.113491, 34.111745], // starting position [lng, lat]
     //     //   zoom: 9, // starting zoom
